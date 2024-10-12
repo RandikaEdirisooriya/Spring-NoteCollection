@@ -11,6 +11,7 @@ import lk.ijse.NoteCollector_V2.Service.UserService;
 import lk.ijse.NoteCollector_V2.Utill.mapping;
 import lk.ijse.NoteCollector_V2.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -74,5 +75,10 @@ if(userDao.existsById(id)){
        tempUser.get().setProfilePicture(userDto.getProfilePicture());
 
      }
+    }
+
+    @Override
+    public UserDetailsService userDetailsService() {
+return  username -> userDao.findByEmail(username).orElseThrow(()->new UserNotFoundException("User not found"));
     }
 }
